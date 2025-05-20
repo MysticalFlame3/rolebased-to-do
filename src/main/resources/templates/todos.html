@@ -16,6 +16,7 @@
   <tr>
     <th>Task</th>
     <th>Status</th>
+    <th th:if="${#authorization.expression('hasRole(''ADMIN'')')}">Owner</th>
     <th>Actions</th>
   </tr>
   </thead>
@@ -23,6 +24,7 @@
   <tr th:each="todo : ${todos}">
     <td th:text="${todo.title}"></td>
     <td th:text="${todo.completed} ? 'Completed' : 'Pending'"></td>
+    <td th:if="${#authorization.expression('hasRole(''ADMIN'')')}" th:text="${todo.username}"></td>
     <td>
       <form th:action="@{'/todos/complete/' + ${todo.id}}" method="post" style="display:inline;">
         <button type="submit" th:if="${!todo.completed}">Complete</button>
@@ -33,6 +35,7 @@
     </td>
   </tr>
   </tbody>
+
 </table>
 
 <p><a th:href="@{/dashboard}">Back to Dashboard</a></p>

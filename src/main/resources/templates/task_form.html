@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Create Task</title>
+</head>
+<body>
+<h2>Create New Task</h2>
+<form th:action="@{/admin/tasks/save}" th:object="${task}" method="post">
+  <label>Title:</label>
+  <input type="text" th:field="*{title}" required/><br/>
+
+  <label>Due Date:</label>
+  <input type="date" th:field="*{dueDate}" required/><br/>
+
+  <label>Assign to (username):</label>
+  <select th:field="*{assignedTo}" required>
+    <option value="" disabled selected>Select user</option>
+    <option th:each="user : ${users}"
+            th:value="${user.username}"
+            th:text="${user.username}">
+    </option>
+  </select><br/>
+
+  <button type="submit">Create</button>
+</form>
+
+<a href="/admin/tasks">Back to Task List</a>
+</body>
+</html>

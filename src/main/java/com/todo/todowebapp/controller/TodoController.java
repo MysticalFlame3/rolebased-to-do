@@ -20,7 +20,16 @@ public class TodoController {
     @GetMapping
     public String listTodos(Authentication authentication, Model model) {
         String username = authentication.getName();
-        model.addAttribute("todos", todoService.getTodosByUsername(username));
+
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+        if (isAdmin) {
+            model.addAttribute("todos", todoService.getAllTodos()); // need to create this method
+        } else {
+            model.addAttribute("todos", todoService.getTodosByUsername(username));
+        }
+
         model.addAttribute("newTodo", new Todo());
         return "todos";
     }
@@ -36,9 +45,14 @@ public class TodoController {
     @PostMapping("/complete/{id}")
     public String completeTodo(@PathVariable Long id, Authentication authentication) {
         Todo todo = todoService.getTodoById(id);
-        if (todo != null && todo.getUsername().equals(authentication.getName())) {
-            todo.setCompleted(true);
-            todoService.updateTodo(todo);
+        if (todo != null) {
+            boolean isAdmin = authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+            if (isAdmin || todo.getUsername().equals(authentication.getName())) {
+                todo.setCompleted(true);
+                todoService.updateTodo(todo);
+            }
         }
         return "redirect:/todos";
     }
@@ -46,8 +60,13 @@ public class TodoController {
     @PostMapping("/delete/{id}")
     public String deleteTodo(@PathVariable Long id, Authentication authentication) {
         Todo todo = todoService.getTodoById(id);
-        if (todo != null && todo.getUsername().equals(authentication.getName())) {
-            todoService.deleteTodoById(id);
+        if (todo != null) {
+            boolean isAdmin = authentication.getAuthorities().stream()
+                    .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
+            if (isAdmin || todo.getUsername().equals(authentication.getName())) {
+                todoService.deleteTodoById(id);
+            }
         }
         return "redirect:/todos";
     }
