@@ -35,17 +35,27 @@ public class UserController {
         return "admin/addUser";
     }
 
-    @PostMapping("/add")
-    public String addUserSubmit(@ModelAttribute User user, @RequestParam("role") String role) {
-        Set<String> roles = new HashSet<>();
-        roles.add(role);
-        userService.saveUser(user.getUsername(), user.getPassword(), roles);
-        return "redirect:/admin/users";
-    }
 
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
+        return "redirect:/admin/users";
+    }
+
+    @PostMapping("/add")
+    public String addUserSubmit(@ModelAttribute User user,
+                                @RequestParam("role") String role,
+                                Model model) {
+        if (userService.usernameExists(user.getUsername())) {
+            model.addAttribute("errorMessage", "Username '" + user.getUsername() + "' already exists!");
+            model.addAttribute("user", user);
+            model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_ADMIN"));
+            return "admin/addUser"; // Return back to form with error message
+        }
+
+        Set<String> roles = new HashSet<>();
+        roles.add(role);
+        userService.saveUser(user.getUsername(), user.getPassword(), roles);
         return "redirect:/admin/users";
     }
 }
