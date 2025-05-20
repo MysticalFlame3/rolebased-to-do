@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -30,6 +31,7 @@ public class UserController {
     @GetMapping("/add")
     public String addUserForm(Model model) {
         model.addAttribute("user", new User());
+        model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_ADMIN"));
         return "admin/addUser";
     }
 

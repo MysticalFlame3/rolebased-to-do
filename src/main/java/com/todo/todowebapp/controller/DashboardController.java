@@ -11,17 +11,19 @@ public class DashboardController {
 
     @GetMapping("/dashboard")
     public String dashboard(Authentication authentication, Model model) {
-        // Get role of logged-in user
-        boolean isAdmin = authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
+        // Check if logged-in user has ROLE_ADMIN
+        boolean isAdmin = authentication.getAuthorities().stream()
+                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
 
         if (isAdmin) {
             model.addAttribute("role", "ADMIN");
         } else {
             model.addAttribute("role", "USER");
         }
+
         model.addAttribute("username", authentication.getName());
 
-        return "dashboard"; // Return Thymeleaf template named 'dashboard.html'
+        // Return the dashboard.html Thymeleaf template
+        return "dashboard";
     }
 }
-
