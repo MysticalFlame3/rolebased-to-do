@@ -17,7 +17,7 @@ public class TaskService {
     }
 
     public Task saveTask(Task task) {
-        return taskRepository.save(task);
+        return taskRepository.save(task); // Works for both insert and update
     }
 
     public List<Task> getAllTasks() {

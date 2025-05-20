@@ -1,6 +1,9 @@
 package com.todo.todowebapp.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import java.time.LocalDate;
 
 @Entity
@@ -14,12 +17,17 @@ public class Task {
     private LocalDate dueDate;
     private boolean completed = false;
     private LocalDate completedDate;
+    private String assignedTo;  // username of the assigned user
 
-    private String assignedTo;  // username of the user
+    // Getters and setters
 
-    // Getters and Setters
     public Long getId() {
         return id;
+    }
+
+    // IMPORTANT: Setter for id is needed for editing existing tasks
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitle() {

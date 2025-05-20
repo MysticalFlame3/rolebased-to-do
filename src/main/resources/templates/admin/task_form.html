@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Create Task</title>
+    <title>Create/Edit Task</title>
 </head>
 <body>
-<h2>Create New Task</h2>
+<h2 th:text="${task.id} != null ? 'Edit Task' : 'Create New Task'"></h2>
+
 <form th:action="@{/admin/tasks/save}" th:object="${task}" method="post">
+    <!-- Hidden ID Field for Edit -->
+    <input type="hidden" th:field="*{id}" />
+
     <label>Title:</label>
     <input type="text" th:field="*{title}" required/><br/>
 
@@ -15,7 +19,7 @@
     <label>Assign to (username):</label>
     <input type="text" th:field="*{assignedTo}" required/><br/>
 
-    <button type="submit">Create</button>
+    <button type="submit">Save</button>
 </form>
 
 <a th:href="@{/admin/tasks}">Back to Task List</a>
