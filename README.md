@@ -41,6 +41,8 @@ This is a **Spring Boot-based To-Do List Web Application** with **role-based acc
 
 ---
 
+🔒 This project is private and not intended for reuse, redistribution, or public contribution.
+
 ## 🚀 Getting Started
 
 ### 1. Clone the repository
