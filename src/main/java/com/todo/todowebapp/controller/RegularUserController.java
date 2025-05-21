@@ -25,7 +25,7 @@ public class RegularUserController {
         String username = authentication.getName();
         List<Task> tasks = taskService.getTasksForUser(username);
         model.addAttribute("tasks", tasks);
-        return "user/tasks"; // templates/user/tasks.html
+        return "user/tasks";
     }
 
     @PostMapping("/tasks/complete/{id}")

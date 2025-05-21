@@ -11,7 +11,7 @@
 //
 //    @GetMapping("/dashboard")
 //    public String dashboard(Authentication authentication, Model model) {
-//        // Check if logged-in user has ROLE_ADMIN
+//
 //        boolean isAdmin = authentication.getAuthorities().stream()
 //                .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
 //
@@ -23,7 +23,7 @@
 //
 //        model.addAttribute("username", authentication.getName());
 //
-//        // Return the dashboard.html Thymeleaf template
+//
 //        return "dashboard";
 //    }
 //}

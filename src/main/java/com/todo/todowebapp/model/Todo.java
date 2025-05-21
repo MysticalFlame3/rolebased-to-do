@@ -16,9 +16,9 @@ public class Todo {
 
     private boolean completed;
 
-    private String username; // owner of this task
+    private String username;
 
-    // Getters and setters
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 

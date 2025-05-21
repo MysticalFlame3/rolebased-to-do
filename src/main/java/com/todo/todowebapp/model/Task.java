@@ -17,15 +17,14 @@ public class Task {
     private LocalDate dueDate;
     private boolean completed = false;
     private LocalDate completedDate;
-    private String assignedTo;  // username of the assigned user
+    private String assignedTo;
 
-    // Getters and setters
 
     public Long getId() {
         return id;
     }
 
-    // IMPORTANT: Setter for id is needed for editing existing tasks
+
     public void setId(Long id) {
         this.id = id;
     }

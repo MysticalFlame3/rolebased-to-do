@@ -7,38 +7,38 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
-// REMOVE @Service annotation as it will be defined as a @Bean in SecurityConfig
 
-import jakarta.annotation.PostConstruct; // Keep PostConstruct for internal initialization
+
+import jakarta.annotation.PostConstruct;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-// Removed @Service annotation
+
 public class CombinedUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private volatile Map<String, UserDetails> inMemoryUsers = new HashMap<>(); // Made volatile for visibility
+    private volatile Map<String, UserDetails> inMemoryUsers = new HashMap<>();
     private final PasswordEncoder passwordEncoder;
 
-    // Constructor to inject UserRepository AND PasswordEncoder
+
     public CombinedUserDetailsService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         System.out.println("CombinedUserDetailsService constructor called (UserRepository and PasswordEncoder injected).");
     }
 
-    // This method will be called by Spring AFTER dependencies are injected
+
     @PostConstruct
     public void init() {
         System.out.println("CombinedUserDetailsService @PostConstruct: Initializing in-memory users.");
         initializeInMemoryUsers(); // Call helper method for initial setup
     }
 
-    // New helper method for initialization to prevent code duplication
+
     private void initializeInMemoryUsers() {
-        // Clear existing map to ensure fresh state if re-initializing
+
         inMemoryUsers.clear();
 
         String adminEncodedPass = passwordEncoder.encode("admin123");
@@ -74,19 +74,18 @@ public class CombinedUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("🔍 Attempting to load user: " + username);
 
-        // 1. Try to load from in-memory users first
+        //load from in-memory users first
         if (inMemoryUsers.containsKey(username)) {
             UserDetails user = inMemoryUsers.get(username);
 
             // CRITICAL DEFENSIVE CHECK: If password is null, re-initialize the map.
-            // This is a workaround for an unexpected state loss.
+
             if (user.getPassword() == null) {
                 System.err.println("WARNING: In-memory user '" + username + "' found with null password. Re-initializing in-memory users map defensively.");
                 initializeInMemoryUsers(); // Re-initialize the map
-                user = inMemoryUsers.get(username); // Get the user again from the re-initialized map
+                user = inMemoryUsers.get(username);
                 if (user.getPassword() == null) {
                     System.err.println("ERROR: Password is still null after defensive re-initialization for user: " + username);
-                    // This scenario would be extremely problematic and might indicate a deeper, unfixable issue without more context.
                 } else {
                     System.out.println("INFO: User '" + username + "' password restored after defensive re-initialization.");
                 }
@@ -96,7 +95,7 @@ public class CombinedUserDetailsService implements UserDetailsService {
             return user;
         }
 
-        // 2. If not found in-memory, try to load from the database
+        // If not found in-memory, try to load from the database
         return userRepository.findByUsername(username)
                 .map(userEntity -> {
                     System.out.println("✅ User '" + username + "' found in database. Password before return: " + userEntity.getPassword());

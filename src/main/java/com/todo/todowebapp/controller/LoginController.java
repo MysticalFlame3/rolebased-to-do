@@ -23,14 +23,13 @@ public class LoginController {
         String username = authentication.getName();
         model.addAttribute("username", username);
 
-        // Check user role and redirect accordingly
         boolean isAdmin = authentication.getAuthorities().stream()
                 .anyMatch(auth -> auth.getAuthority().equals("ROLE_ADMIN"));
 
         if (isAdmin) {
-            return "redirect:/admin/dashboard"; // Admins go to admin dashboard
+            return "redirect:/admin/dashboard";
         } else {
-            return "redirect:/user/tasks"; // Users go to their tasks
+            return "redirect:/user/tasks";
         }
     }
 }

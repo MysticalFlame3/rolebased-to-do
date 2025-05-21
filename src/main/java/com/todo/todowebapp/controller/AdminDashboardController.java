@@ -16,6 +16,6 @@ public class AdminDashboardController {
     public String adminDashboard(Authentication authentication, Model model) {
         model.addAttribute("username", authentication.getName());
         model.addAttribute("role", "ADMIN");
-        return "admin/dashboard"; // templates/admin/dashboard.html
+        return "admin/dashboard";
     }
 }

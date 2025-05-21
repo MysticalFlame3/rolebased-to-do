@@ -19,22 +19,22 @@ public class TaskController {
         this.userService = userService;
     }
 
-    // View all tasks
+
     @GetMapping("/tasks")
     public String viewTasks(Model model) {
         model.addAttribute("tasks", taskService.getAllTasks());
-        return "admin/tasks";  // Make sure this Thymeleaf template exists
+        return "admin/tasks";
     }
 
-    // Show form to create a new task
+
     @GetMapping("/tasks/new")
     public String showTaskForm(Model model) {
         model.addAttribute("task", new Task());
-        model.addAttribute("users", userService.getAllUsers()); // Provide user list for assignment
-        return "admin/task_form";  // Make sure this Thymeleaf template exists
+        model.addAttribute("users", userService.getAllUsers());
+        return "admin/task_form";
     }
 
-    // Save a new or edited task
+
     @PostMapping("/tasks/save")
     public String saveTask(@ModelAttribute Task task) {
         System.out.println("Saving task with ID: " + task.getId());
@@ -49,7 +49,7 @@ public class TaskController {
         return "redirect:/admin/tasks";
     }
 
-    // Show form to edit existing task
+
     @GetMapping("/tasks/edit/{id}")
     public String showEditTaskForm(@PathVariable Long id, Model model) {
         Task task = taskService.getTaskById(id)

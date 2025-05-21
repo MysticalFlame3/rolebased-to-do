@@ -37,7 +37,7 @@ public class UserController {
     public String addUserForm(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("roles", Arrays.asList("USER", "ADMIN"));
-        return "admin/addUser"; // templates/admin/addUser.html
+        return "admin/addUser";
     }
 
     @PostMapping("/add")

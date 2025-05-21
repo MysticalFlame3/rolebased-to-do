@@ -8,12 +8,12 @@ public class AuthController {
 
 //    @GetMapping("/login")
 //    public String login() {
-//        return "login";  // your login.html Thymeleaf template
+//        return "login";
 //    }
 
 //    @GetMapping("/dashboard")
 //    public String dashboard() {
-//        return "dashboard";  // dashboard.html template for logged-in users
+//        return "dashboard";
 //    }
 }
 

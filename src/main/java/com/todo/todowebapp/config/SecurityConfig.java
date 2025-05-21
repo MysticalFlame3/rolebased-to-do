@@ -29,7 +29,7 @@ import java.util.Set;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    @Autowired // Autowire UserRepository here as it's needed for the CombinedUserDetailsService bean
+    @Autowired
     private UserRepository userRepository;
 
     @Bean
@@ -37,12 +37,9 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Define CombinedUserDetailsService as a Bean here, explicitly passing its dependencies
+
     @Bean
     public UserDetailsService userDetailsService(PasswordEncoder passwordEncoder) {
-        // Spring will inject userRepository (from @Autowired) and passwordEncoder (from @Bean)
-        // This ensures the CombinedUserDetailsService is created as a singleton
-        // and its constructor dependencies are fully resolved before @PostConstruct runs.
         return new CombinedUserDetailsService(userRepository, passwordEncoder);
     }
 
