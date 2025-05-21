@@ -65,5 +65,5 @@ cd todowebapp
 - **Username:** user2
 - **Password:** user456
 
-> ⚠️ Note: These credentials are for local testing and development only.
+> ⚠️ Note: These credentials are for local testing only.
 
