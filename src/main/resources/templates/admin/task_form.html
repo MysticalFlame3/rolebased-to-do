@@ -72,9 +72,11 @@
 </head>
 <body>
 <div class="task-form-card">
-    <h2 class="text-center mb-4 display-5 fw-bold text-dark">Create New Task</h2>
+    <h2 class="text-center mb-4 display-5 fw-bold text-dark" th:text="${task.id} != null ? 'Edit Task' : 'Create New Task'"></h2>
 
     <form th:action="@{/admin/tasks/save}" th:object="${task}" method="post" class="needs-validation" novalidate>
+        <input type="hidden" th:field="*{id}" />
+
         <div class="mb-3">
             <label for="title" class="form-label">Title:</label>
             <input type="text" class="form-control" id="title" th:field="*{title}" required placeholder="Enter task title"/>
@@ -96,7 +98,7 @@
             </select>
         </div>
 
-        <button type="submit" class="btn btn-primary-custom btn-custom w-100 mt-3">Create Task</button>
+        <button type="submit" class="btn btn-primary-custom btn-custom w-100 mt-3">Save Task</button>
     </form>
 
     <div class="text-center mt-4">
