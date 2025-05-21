@@ -21,12 +21,12 @@ public class AdminController {
     @GetMapping("/users/new")
     public String showUserForm(Model model) {
         model.addAttribute("user", new User());
-        return "admin/user_form";
+        return "admin/user_form";  // Thymeleaf template for user creation form
     }
 
     @PostMapping("/users/save")
     public String saveUser(@ModelAttribute User user) {
-        // Set role as a singleton set with "USER"
+        // Set role as singleton set with "USER"
         user.setRoles(Collections.singleton("USER"));
         userService.saveUser(user);
         return "redirect:/admin/users/new?success";

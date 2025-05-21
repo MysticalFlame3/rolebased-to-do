@@ -18,44 +18,46 @@ import java.util.Set;
 @PreAuthorize("hasRole('ADMIN')")
 public class UserController {
 
+
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
 
     @GetMapping
     public String listUsers(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
-        return "admin/users";
+        return "admin/users"; // templates/admin/users.html
     }
 
     @GetMapping("/add")
     public String addUserForm(Model model) {
         model.addAttribute("user", new User());
-        model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_ADMIN"));
-        return "admin/addUser";
-    }
-
-
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return "redirect:/admin/users";
+        model.addAttribute("roles", Arrays.asList("USER", "ADMIN"));
+        return "admin/addUser"; // templates/admin/addUser.html
     }
 
     @PostMapping("/add")
-    public String addUserSubmit(@ModelAttribute User user,
-                                @RequestParam("role") String role,
-                                Model model) {
+    public String addUserSubmit(@ModelAttribute User user, @RequestParam("role") String role, Model model) {
         if (userService.usernameExists(user.getUsername())) {
             model.addAttribute("errorMessage", "Username '" + user.getUsername() + "' already exists!");
             model.addAttribute("user", user);
-            model.addAttribute("roles", Arrays.asList("ROLE_USER", "ROLE_ADMIN"));
-            return "admin/addUser"; // Return back to form with error message
+            model.addAttribute("roles", Arrays.asList("USER", "ADMIN"));
+            return "admin/addUser";
         }
 
         Set<String> roles = new HashSet<>();
         roles.add(role);
         userService.saveUser(user.getUsername(), user.getPassword(), roles);
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteUser(@PathVariable Long id) {
+        userService.deleteUser(id);
         return "redirect:/admin/users";
     }
 }

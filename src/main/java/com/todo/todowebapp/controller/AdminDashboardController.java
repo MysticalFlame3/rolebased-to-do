@@ -15,7 +15,7 @@ public class AdminDashboardController {
     @GetMapping("/dashboard")
     public String adminDashboard(Authentication authentication, Model model) {
         model.addAttribute("username", authentication.getName());
-        model.addAttribute("role", "ADMIN"); // since only admins can access this controller
-        return "admin/dashboard"; // must be located at templates/admin/dashboard.html
+        model.addAttribute("role", "ADMIN");
+        return "admin/dashboard"; // templates/admin/dashboard.html
     }
 }

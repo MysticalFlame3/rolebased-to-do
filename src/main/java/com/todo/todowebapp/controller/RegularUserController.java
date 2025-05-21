@@ -12,7 +12,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/user")
-public class RegularUserController {  // ✅ Renamed to avoid conflict
+public class RegularUserController {
 
     private final TaskService taskService;
 
@@ -25,7 +25,7 @@ public class RegularUserController {  // ✅ Renamed to avoid conflict
         String username = authentication.getName();
         List<Task> tasks = taskService.getTasksForUser(username);
         model.addAttribute("tasks", tasks);
-        return "user/tasks";  // templates/user/tasks.html
+        return "user/tasks"; // templates/user/tasks.html
     }
 
     @PostMapping("/tasks/complete/{id}")
@@ -44,4 +44,3 @@ public class RegularUserController {  // ✅ Renamed to avoid conflict
         return "redirect:/user/tasks";
     }
 }
-
