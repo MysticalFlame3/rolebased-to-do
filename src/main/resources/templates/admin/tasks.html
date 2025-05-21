@@ -1,43 +1,166 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
+<html xmlns:th="http://www.thymeleaf.org" lang="en"> <head>
   <title>Admin Dashboard - Task List</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+  <style>
+      /* Custom styles for background and centering */
+      body {
+          background: linear-gradient(to bottom right, #f0f0f0, #e0e0e0); /* Light grey gradient background */
+          min-height: 100vh;
+          display: flex;
+          align-items: flex-start; /* Align to start for better table visibility */
+          justify-content: center;
+          padding: 2rem; /* Increased padding */
+          font-family: 'Inter', sans-serif;
+      }
+      .dashboard-list-card {
+          background-color: #fff;
+          padding: 2rem;
+          border-radius: 0.75rem;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+          width: 100%;
+          max-width: 70rem; /* Wider card for table content */
+      }
+      .btn-custom {
+          border-radius: 0.5rem; /* Rounded buttons */
+          padding: 0.75rem 1.25rem; /* Larger padding for better touch targets */
+          font-weight: 600; /* Semi-bold text */
+          transition: all 0.15s ease-in-out; /* Smooth transitions */
+          box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* Subtle shadow */
+      }
+      /* Custom button styles based on light grey theme */
+      .btn-primary-custom {
+          background-color: #aaaaaa; /* Medium light grey */
+          border-color: #aaaaaa;
+          color: #fff;
+      }
+      .btn-primary-custom:hover {
+          background-color: #888888; /* Darker light grey on hover */
+          border-color: #888888;
+          color: #fff;
+      }
+      .btn-primary-custom:focus {
+          box-shadow: 0 0 0 0.25rem rgba(170, 170, 170, 0.5);
+      }
+      .btn-warning-custom {
+          background-color: #ffc107; /* Bootstrap yellow */
+          border-color: #ffc107;
+          color: #212529; /* Dark text for contrast */
+      }
+      .btn-warning-custom:hover {
+          background-color: #e0a800;
+          border-color: #d39e00;
+          color: #212529;
+      }
+      .btn-warning-custom:focus {
+          box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+      }
+      .btn-danger-custom {
+          background-color: #dc3545; /* Bootstrap red */
+          border-color: #dc3545;
+          color: #fff;
+      }
+      .btn-danger-custom:hover {
+          background-color: #c82333;
+          border-color: #bd2130;
+          color: #fff;
+      }
+      .btn-danger-custom:focus {
+          box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+      }
+      .btn-outline-secondary-custom {
+          border-color: #6c757d; /* Bootstrap secondary border */
+          color: #6c757d;
+      }
+      .btn-outline-secondary-custom:hover {
+          background-color: #6c757d;
+          color: #fff;
+      }
+      .table-header-custom {
+          background-color: #4b5563; /* Dark grey for table header */
+          color: #fff;
+      }
+  </style>
 </head>
 <body>
-<div class="container mt-5">
-  <h2>Admin Task Management</h2>
+<div class="dashboard-list-card">
+  <h2 class="text-center mb-4 display-5 fw-bold text-dark">Admin Task Management</h2>
 
-  <div class="d-flex justify-content-between mb-3">
-    <a th:href="@{/admin/tasks/new}" class="btn btn-primary">Create New Task</a>
-    <a th:href="@{/admin/users}" class="btn btn-warning">Manage Users</a>
-    <a th:href="@{/logout}" class="btn btn-secondary">Logout</a>
+  <div class="d-flex justify-content-between mb-4 flex-wrap gap-2">
+    <a th:href="@{/admin/tasks/new}" class="btn btn-primary-custom btn-custom">Create New Task</a>
+    <a th:href="@{/admin/users}" class="btn btn-warning-custom btn-custom">Manage Users</a>
+    <a th:href="@{/logout}" class="btn btn-danger-custom btn-custom">Logout</a>
   </div>
 
-  <table class="table table-bordered">
-    <thead class="table-dark">
-    <tr>
-      <th>Title</th>
-      <th>Due Date</th>
-      <th>Assigned To</th>
-      <th>Completed</th>
-      <th>Actions</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="task : ${tasks}">
-      <td th:text="${task.title}">Title</td>
-      <td th:text="${task.dueDate}">Due Date</td>
-      <td th:text="${task.assignedTo}">User</td>
-      <td th:text="${task.completed ? 'Yes' : 'No'}">Completed</td>
-      <td>
-        <a th:href="@{/admin/tasks/edit/{id}(id=${task.id})}" class="btn btn-warning btn-sm">Edit</a>
-        <a th:href="@{/admin/tasks/delete/{id}(id=${task.id})}" class="btn btn-danger btn-sm"
-           onclick="return confirm('Are you sure?')">Delete</a>
-      </td>
-    </tr>
-    </tbody>
-  </table>
+  <div class="table-responsive">
+    <table class="table table-bordered align-middle">
+      <thead class="table-header-custom">
+      <tr>
+        <th>Title</th>
+        <th>Due Date</th>
+        <th>Assigned To</th>
+        <th>Completed</th>
+        <th>Actions</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:each="task : ${tasks}">
+        <td th:text="${task.title}">Title</td>
+        <td th:text="${task.dueDate}">Due Date</td>
+        <td th:text="${task.assignedTo}">User</td>
+        <td th:text="${task.completed ? 'Yes' : 'No'}">Completed</td>
+        <td>
+          <a th:href="@{/admin/tasks/edit/{id}(id=${task.id})}" class="btn btn-warning-custom btn-sm btn-custom me-2">Edit</a>
+          <button type="button" class="btn btn-danger-custom btn-sm btn-custom" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" th:data-task-id="${task.id}">
+            Delete
+          </button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
 </div>
+
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirm Deletion</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this task? This action cannot be undone.
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary btn-custom" data-bs-dismiss="modal">Cancel</button>
+        <a href="#" id="confirmDeleteButton" class="btn btn-danger-custom btn-custom">Delete</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // JavaScript to handle the delete confirmation modal
+    const confirmDeleteModal = document.getElementById('confirmDeleteModal');
+    if (confirmDeleteModal) {
+        console.log('Delete confirmation modal script loaded for tasks.'); // Added specific log
+        confirmDeleteModal.addEventListener('show.bs.modal', event => {
+            console.log('Task delete modal is about to be shown.');
+            // Button that triggered the modal
+            const button = event.relatedTarget;
+            // Extract info from data-bs-*-attributes
+            const taskId = button.getAttribute('data-task-id');
+            console.log('Task ID from button:', taskId); // Log the extracted ID
+            // Update the modal's delete button href
+            const confirmDeleteButton = confirmDeleteModal.querySelector('#confirmDeleteButton');
+            confirmDeleteButton.href = `/admin/tasks/delete/${taskId}`;
+            console.log('Task delete button href set to:', confirmDeleteButton.href); // Log the set href
+        });
+    } else {
+        console.error('Modal element with ID "confirmDeleteModal" not found for tasks.'); // Added specific error
+    }
+</script>
 </body>
 </html>
