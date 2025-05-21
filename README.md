@@ -50,3 +50,20 @@ This is a **Spring Boot-based To-Do List Web Application** with **role-based acc
 ```bash
 git clone https://github.com/your-username/todowebapp.git
 cd todowebapp
+
+## 🔐 Demo Login Credentials
+
+### 👤 Admin
+- **Username:** admin
+- **Password:** admin123
+
+### 🙋 Regular User
+- **Username:** user1
+- **Password:** user123
+
+### 🙋 Regular User
+- **Username:** user2
+- **Password:** user456
+
+> ⚠️ Note: These credentials are for local testing and development only.
+
